@@ -1,0 +1,142 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# URL del sitio (cambiar por tu dominio real cuando lo tengas)
+site_url: https://edicionesdelgaraje.netlify.app
+display_url: https://edicionesdelgaraje.netlify.app
+
+# Carpeta donde se guardan las imágenes que subas desde el CMS
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+# Idioma del panel
+locale: 'es'
+
+# Colecciones que se pueden editar desde el CMS
+collections:
+
+  # ----- LIBROS -----
+  - name: "libros"
+    label: "📚 Libros"
+    label_singular: "Libro"
+    folder: "_libros"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{titulo}} — ${{precio}}"
+    fields:
+      - { label: "Título", name: "titulo", widget: "string" }
+      - { label: "Frase destacada (pitch)", name: "pitch", widget: "string", hint: "Una sola línea memorable que resuma el libro" }
+      - { label: "Autor", name: "autor", widget: "string" }
+      - { label: "Precio (en pesos uruguayos)", name: "precio", widget: "number", value_type: "int" }
+      - label: "Categoría"
+        name: "categoria"
+        widget: "select"
+        options:
+          - { label: "Literatura infantil", value: "infantil" }
+          - { label: "Novelas", value: "novela" }
+          - { label: "Narrativa", value: "narrativa" }
+          - { label: "Divulgación", value: "divulgacion" }
+          - { label: "Educación", value: "educacion" }
+          - { label: "Cocina", value: "cocina" }
+      - { label: "Edad sugerida", name: "edad", widget: "string", hint: "Ej: 4 a 8 años / Adultos" }
+      - { label: "Páginas", name: "paginas", widget: "number", value_type: "int", required: false }
+      - { label: "Dimensiones", name: "dimensiones", widget: "string", required: false, hint: "Ej: 20 x 25 cm" }
+      - label: "Tipo de tapa"
+        name: "tapa"
+        widget: "select"
+        options: ["Tapa blanda", "Tapa dura", "Anillado"]
+        default: "Tapa blanda"
+      - { label: "ISBN", name: "isbn", widget: "string", required: false }
+      - { label: "Color del libro (para la tapa visual)", name: "color", widget: "color", default: "#c4471c", hint: "Color de fondo de la portada mientras no haya foto real" }
+      - { label: "Imagen de tapa (opcional)", name: "imagen", widget: "image", required: false }
+      - { label: "Es destacado", name: "destacado", widget: "boolean", default: false }
+      - { label: "Es novedad", name: "novedad", widget: "boolean", default: false }
+      - name: "seo"
+        label: "🔍 SEO"
+        widget: "object"
+        fields:
+          - { label: "Título SEO (50-60 caracteres)", name: "seo_title", widget: "string", hint: "Lo que aparece en Google" }
+          - { label: "Descripción SEO (130-155 caracteres)", name: "seo_desc", widget: "text", hint: "El texto que aparece debajo del título en Google" }
+          - { label: "Palabras clave", name: "keywords", widget: "string", hint: "Separadas por comas" }
+      - { label: "Descripción corta (1-2 líneas)", name: "corta", widget: "text" }
+      - { label: "Descripción completa", name: "body", widget: "markdown", hint: "Texto largo del libro. Usá saltos de línea para separar párrafos" }
+
+  # ----- POSTS DEL BLOG -----
+  - name: "posts"
+    label: "📰 Posts del blog"
+    label_singular: "Post"
+    folder: "_posts"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{titulo}} — {{fecha}}"
+    fields:
+      - { label: "Título", name: "titulo", widget: "string" }
+      - { label: "Fecha", name: "fecha", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - label: "Categoría"
+        name: "categoria"
+        widget: "select"
+        options: ["Recomendaciones", "Autores", "Educación", "Guías", "Historia", "Novedades"]
+      - { label: "Tiempo de lectura", name: "lectura", widget: "string", default: "5 min" }
+      - { label: "Resumen (1-2 líneas)", name: "resumen", widget: "text" }
+      - name: "seo"
+        label: "🔍 SEO"
+        widget: "object"
+        fields:
+          - { label: "Título SEO", name: "seo_title", widget: "string" }
+          - { label: "Descripción SEO", name: "seo_desc", widget: "text" }
+          - { label: "Palabras clave", name: "keywords", widget: "string" }
+      - label: "Libros mencionados"
+        name: "libros_mencionados"
+        widget: "relation"
+        collection: "libros"
+        search_fields: ["titulo"]
+        value_field: "{{slug}}"
+        display_fields: ["titulo"]
+        multiple: true
+        required: false
+        hint: "Elegí libros del catálogo para mostrar al final del post"
+      - { label: "Contenido", name: "body", widget: "markdown", hint: "Usá ## para títulos, **texto** para negrita, *texto* para itálica" }
+
+  # ----- PÁGINAS FIJAS -----
+  - name: "paginas"
+    label: "📄 Páginas fijas"
+    files:
+      - file: "_data/home.md"
+        label: "🏠 Home"
+        name: "home"
+        fields:
+          - { label: "Tag del hero", name: "hero_tag", widget: "string", default: "Editorial uruguaya independiente" }
+          - { label: "Título principal", name: "hero_title", widget: "string" }
+          - { label: "Subtítulo del hero", name: "hero_subtitle", widget: "text" }
+          - name: "stats"
+            label: "Estadísticas del hero"
+            widget: "list"
+            fields:
+              - { label: "Número", name: "numero", widget: "string" }
+              - { label: "Texto", name: "texto", widget: "string" }
+
+      - file: "_data/sobre.md"
+        label: "📖 Sobre nosotros"
+        name: "sobre"
+        fields:
+          - { label: "Título", name: "titulo", widget: "string" }
+          - { label: "Subtítulo", name: "subtitulo", widget: "text" }
+          - { label: "Contenido", name: "body", widget: "markdown" }
+
+      - file: "_data/contacto.md"
+        label: "📞 Contacto"
+        name: "contacto"
+        fields:
+          - { label: "WhatsApp (sin + ni espacios)", name: "whatsapp", widget: "string", default: "59800000000", hint: "Ej: 59899123456" }
+          - { label: "Email", name: "email", widget: "string", default: "hola@edicionesdelgaraje.com" }
+          - { label: "Instagram (sin @)", name: "instagram", widget: "string", default: "edicionesdelgaraje" }
+          - { label: "Facebook (URL)", name: "facebook", widget: "string", required: false }
+
+      - file: "_data/envios.md"
+        label: "📦 Envíos y pagos"
+        name: "envios"
+        fields:
+          - { label: "Título", name: "titulo", widget: "string" }
+          - { label: "Subtítulo", name: "subtitulo", widget: "text" }
+          - { label: "Contenido", name: "body", widget: "markdown" }
