@@ -1,0 +1,157 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# URL del sitio
+site_url: https://edicionesdelgaraje.netlify.app
+display_url: https://edicionesdelgaraje.netlify.app
+
+# Carpeta donde se guardan las imágenes que subas desde el CMS
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+# Idioma del panel
+locale: 'es'
+
+# Colecciones editables desde el CMS
+collections:
+
+  # ============================== #
+  # POSTS DEL BLOG (uso frecuente) #
+  # ============================== #
+  - name: "posts"
+    label: "📰 Posts del blog"
+    label_singular: "Post"
+    folder: "blog"
+    create: true
+    extension: "md"
+    format: "frontmatter"
+    slug: "{{slug}}"
+    summary: "{{titulo}} — {{fecha}}"
+    fields:
+      - label: "Título del post"
+        name: "titulo"
+        widget: "string"
+        hint: "Ej: 5 libros uruguayos para regalar en Navidad"
+
+      - label: "Fecha"
+        name: "fecha"
+        widget: "datetime"
+        format: "YYYY-MM-DD"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+
+      - label: "Categoría"
+        name: "categoria"
+        widget: "select"
+        options:
+          - "Recomendaciones"
+          - "Autores"
+          - "Educación"
+          - "Guías"
+          - "Historia"
+          - "Novedades"
+        default: "Recomendaciones"
+
+      - label: "Tiempo de lectura"
+        name: "lectura"
+        widget: "string"
+        default: "5 min"
+        hint: "Ej: 5 min, 7 min"
+
+      - label: "Resumen (1-2 líneas)"
+        name: "resumen"
+        widget: "text"
+        hint: "Aparece en el listado del blog y debajo del título"
+
+      - label: "Imagen destacada (opcional)"
+        name: "imagen"
+        widget: "image"
+        required: false
+        hint: "Imagen que acompaña el post"
+
+      - label: "🔍 SEO — Título para Google"
+        name: "seo_title"
+        widget: "string"
+        hint: "50-60 caracteres. Lo que aparece en Google."
+
+      - label: "🔍 SEO — Descripción para Google"
+        name: "seo_desc"
+        widget: "text"
+        hint: "130-155 caracteres. El texto debajo del título en Google."
+
+      - label: "🔍 SEO — Palabras clave"
+        name: "keywords"
+        widget: "string"
+        hint: "Separadas por comas"
+
+      - label: "Contenido del post"
+        name: "body"
+        widget: "markdown"
+        hint: "Usá ## para títulos, **negrita** y *itálica*. Para enlaces: [texto](url)"
+
+  # ============================== #
+  # PÁGINAS FIJAS                  #
+  # ============================== #
+  - name: "paginas"
+    label: "📄 Páginas fijas"
+    files:
+
+      - file: "_data/sobre.md"
+        label: "📖 Sobre nosotros"
+        name: "sobre"
+        fields:
+          - label: "Título de la página"
+            name: "titulo"
+            widget: "string"
+            default: "Sobre la editorial"
+          - label: "Subtítulo"
+            name: "subtitulo"
+            widget: "text"
+          - label: "Contenido"
+            name: "body"
+            widget: "markdown"
+
+      - file: "_data/envios.md"
+        label: "📦 Envíos y pagos"
+        name: "envios"
+        fields:
+          - label: "Título"
+            name: "titulo"
+            widget: "string"
+            default: "Envíos y pagos"
+          - label: "Subtítulo"
+            name: "subtitulo"
+            widget: "text"
+          - label: "Contenido"
+            name: "body"
+            widget: "markdown"
+
+  # ============================== #
+  # CONFIGURACIÓN                  #
+  # ============================== #
+  - name: "config"
+    label: "⚙️ Configuración"
+    files:
+
+      - file: "_data/contacto.md"
+        label: "📞 Datos de contacto"
+        name: "contacto"
+        fields:
+          - label: "WhatsApp (sin + ni espacios)"
+            name: "whatsapp"
+            widget: "string"
+            default: "59800000000"
+            hint: "Ej: 59899123456"
+          - label: "Email"
+            name: "email"
+            widget: "string"
+            default: "hola@edicionesdelgaraje.com"
+          - label: "Instagram (sin @)"
+            name: "instagram"
+            widget: "string"
+            default: "edicionesdelgaraje"
+          - label: "Facebook (URL completa)"
+            name: "facebook"
+            widget: "string"
+            required: false
